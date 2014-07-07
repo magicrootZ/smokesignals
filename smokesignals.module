@@ -1,0 +1,754 @@
+<?php
+
+define('SMOKESIGNALS_CHATS_LIMIT','10');
+define('SMOKESIGNALS_CHAT_LIFETIME', '5');
+
+global $emoticons;
+/**
+ * list of supported emoticons
+ */
+$emoticons = array(
+    '(embarrassed)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/embarrassed.png',
+	'(oops)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/oops.png',
+	'(thumbsup)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/thumbs_up.png',
+	'(thumbsdown)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/thumbs_down.png',
+	'(allthethings)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/allthethings.png',
+	'(android)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/android.png',
+	'(areyoukiddingme)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/areyoukiddingme.png',
+	'(ashton)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/ashton.png',
+	'(awyeah)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/awyea.png',
+	'(badpokerface)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/badpokerface.png',
+	'(basket)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/basket.png',
+	'(beer)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/beer.png',
+	'(bumble)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/bumble.png',
+	'(bunny)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/bunny.png',
+	'(cadbury)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/cadbury.png',
+	'(cake)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/cake.png',
+	'(candycorn)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/candycorn.png',
+	'(caruso)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/caruso.png',
+	'(cereal)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/cerealguy.png',
+	'(challengeaccepted)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/challengeaccepted.png',
+	'(chewie)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/chewy.png',
+	'(chocobunny)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/chocobunny.png',
+	'(chompy)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/chompy.gif',
+	'(chris)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/chris.png',
+	'(coffee)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/coffee.png',
+	'(content)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/content.png',
+	'(cornelius)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/cornelius.png',
+	'(dealwithit)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/dealwithit.gif',
+	'(derp)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/derp.png',
+	'(disapproval)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/disapproval.png',
+	'(dosequis)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/dosequis.png',
+	'(ducreux)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/ducreux.png',
+	'(dumb)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/dumbbitch.png',
+	'(facepalm)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/facepalm.png',
+	'(fap)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/fap.png',
+	'(foreveralone)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/foreveralone.png',
+	'(freddie)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/freddie.png',
+	'(fry)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/fry.png',
+	'(fuckyeah)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/fuckyeah.png',
+	'(garret)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/garret.png',
+	'(gates)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/gates.png',
+	'(ghost)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/ghost.png',
+	'(goodnews)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/farnsworth.png',
+	'(greenbeer)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/greenbeer.png',
+	'(haveaseat)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/haveaseat.png',
+	'(heart)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/heart.png',
+	'(hipster)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/hipster.png',
+	'(huh)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/huh-1381428657.png',
+	'(ilied)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/ilied.png',
+	'(jackie)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/jackie.png',
+	'(jobs)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/jobs.png',
+	'(kennypowers)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/10678/kennypowers.png',
+	'(krang)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/krang.gif',
+	'(kwanzaa)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/kwanzaa.png',
+	'(lincoln)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/lincoln.png',
+	'(lol)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/lol.png',
+	'(lolwut)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/lolwut.png',
+	'(megusta)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/megusta.png',
+	'(menorah)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/menorah.png',
+	'(notbad)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/notbad.png',
+	'(nothingtodohere)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/nothingtodohere.png',
+	'(ohcrap)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/ohcrap.png',
+	'(okay)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/okay.png',
+	'(omg)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/omg.png',
+	'(orly)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/orly.png',
+	'(pbr)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/pbr.png',
+	'(pete)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/pete.png',
+	'(philosoraptor)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/philosoraptor.png',
+	'(pirate)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/pirate.gif',
+	'(pokerface)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/pokerface.png',
+	'(poo)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/poo.png',
+	'(present)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/present.png',
+	'(pumpkin)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/pumpkin.png',
+	'(rageguy)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/rageguy.png',
+	'(rebeccablack)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/rebeccablack.png',
+	'(reddit)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/reddit.png',
+	'(rudolph)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/rudolph.png',
+	'(sadpanda)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/sadpanda.png',
+	'(sadtroll)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/sadtroll.png',
+	'(samuel)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/samuel.png',
+	'(santa)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/santa.png',
+	'(scumbag)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/scumbag.png',
+	'(shamrock)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/shamrock.png',
+	'(skyrim)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/skyrim.png',
+	'(stare)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/stare.png',
+	'(sweetjesus)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/sweetjesus.png',
+	'(taft)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/taft.png',
+	'(tree)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/tree.png',
+	'(troll)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/troll.png',
+	'(truestory)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/truestory.png',
+	'(washington)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/washington.png',
+	'(wat)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/wat.png',
+	'(wtf)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/wtf.png',
+	'(yey)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/yey.png',
+	'(yodawg)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/yodawg.png',
+	'(yuno)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/yuno.png',
+	'(zoidberg)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/zoidberg.png',
+	'(zzz)' => 'https://dujrsrsgsd3nh.cloudfront.net/img/emoticons/zzz.gif'
+);
+
+function smokesignals_permission()
+{
+    return array(
+        'administer smoke signals' => array(
+            'title' => t('Administer Smoke Signals usage'),
+            'description' => t('Control and monitor the usage of this feature')
+        ),
+        'use smoke signals' => array(
+            'title' => t('Use smoke signals'),
+            'description' => t('Use smoke signals chat'),
+        )
+    );
+}
+
+function smokesignals_menu()
+{
+    $items = array();
+
+
+    // smoke signal chat launcher
+    $items['smokesignals'] = array(
+        'title' => t('Smoke Signals'),
+        'description' => t('Smoke signals launcher'),
+        'page callback' => 'smokesignals_launcher',
+        'access arguments' => array('use smoke signals'),
+        'type' => MENU_CALLBACK
+
+    );
+
+    // chat landing page
+    $items['smokesignal/%'] = array(
+        'title' => t('Smoke Signal'),
+        'description' => t('Smoke signal session'),
+        'page arguments' => array(1),
+        'page callback' => 'smokesignals_chat',
+        'access arguments' => array('use smoke signals'),
+        'type' => MENU_CALLBACK
+
+    );
+
+    // list of supported emoticons
+    $items['smokesignals/emoticons'] = array(
+        'title' => t('Smoke Signal'),
+        'description' => t('Smoke signal emoticons'),
+        'page callback' => 'smokesignals_emoticons',
+        'access arguments' => array('use smoke signals'),
+        'type' => MENU_CALLBACK
+
+    );
+
+    // delete a chat
+    $items['smokesignal/delete/%'] = array(
+        'title' => t('Delete Smoke Signal'),
+        'description' => t('Delete a smoke signal'),
+        'page arguments' => array(2),
+        'page callback' => 'smokesignals_delete',
+        'access arguments' => array('use smoke signals'),
+        'type' => MENU_CALLBACK
+    );
+
+
+    // get all messages for a chat
+    $items['smokesignals/messages'] = array(
+        'access arguments' => array('use smoke signals'),
+        'page callback' => 'smokesignals_messages',
+        'type' => MENU_CALLBACK
+    );
+
+    // user profile smoke signals list for user
+    $items['user/%user/smokesignal'] = array(
+        'title' => t('Smoke Signals'),
+        'page callback' => 'smokesignals_user_chats',
+        'page arguments' => array(1),
+        'access arguments' => array('use smoke signals'),
+        'type' => MENU_LOCAL_TASK
+    );
+
+    // message receiving endpoint
+    $items['smokesignals/sendMessage'] = array(
+        'access arguments' => array('use smoke signals'),
+        'page callback' => 'smokesignals_get_message',
+        'type' => MENU_CALLBACK
+    );
+
+    // admin config settings
+    $items['admin/config/services/smokesignals'] = array(
+        'title' => 'Smoke Signals Module Settings',
+        'description' => 'Control the different settings for this module',
+        'position' => 'right',
+        'weight' => 10,
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('smokesignals_admin'),
+        'access arguments' => array('access administration pages'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+
+    return $items;
+}
+
+function smokesignals_emoticons()
+{
+    global $emoticons;
+    $emos = array();
+
+
+    // iterate over list of emoticons to replace with img tags
+    foreach($emoticons as $emo => $uri)
+    {
+        $emos[] = "<img alt='$emo' src='$uri'  title='$emo'> $emo";
+    }
+
+    return theme('item_list', array('items' =>$emos));
+}
+
+
+/**
+ * @param stdClass $user
+ */
+function smokesignals_user_chats($user)
+{
+
+
+    // get all the chats for this user
+    // if this user has admin privileges, it will also grab other chats.
+    $sql="
+          SELECT
+            *
+          FROM
+            {smokesignals_user} su
+           JOIN
+            {users} u ON (u.uid = su.uid)
+          WHERE
+            creator = 1
+            [[USER_MATCH_CLAUSE]]
+        ";
+
+    $args = array();
+    $headers = array('Smoke Signal');
+
+    if(user_access('administer smoke signals', $user))
+    {
+        $replacer = '';
+        $headers[] = 'Creator';
+    }
+    else
+    {
+        $replacer =  'AND su.uid = :uid';
+        $args = array(':uid' => (int)$user->uid);
+    }
+    $headers[] = 'Actions';
+
+    $sql = str_replace('[[USER_MATCH_CLAUSE]]', $replacer, $sql);
+    $results = db_query($sql, $args);
+    $rows = array();
+
+    // build chats
+    foreach($results as $row)
+    {
+        $tableRow = array(
+            l($row->ssid, 'smokesignal/'.$row->ssid),
+
+        );
+
+        if(user_access('administer smoke signals', $user))
+        {
+            $tableRow[] = $row->name;
+        }
+
+        $tableRow[] = l('Delete', 'smokesignal/delete/' . $row->ssid);
+        $rows[] = $tableRow;
+    }
+
+    $vars =array(
+        'header'=> $headers,
+        'rows' => $rows,
+        'attributes' => array(),
+        'sticky' => true,
+        'caption' => t('The set of chats for this user.'),
+        'colgroups' => array(),
+        'empty' => t('You currently have no chats'),
+    );
+    return theme_table($vars);
+}
+
+
+function smokesignals_block_info()
+{
+    $blocks = array();
+
+    $blocks['smokesignals_list'] = array(
+        'info' => t('Smoke signals list'),
+        'cache' => DRUPAL_NO_CACHE,
+
+    );
+
+    return $blocks;
+}
+
+/**
+ * Present the chats for this user
+ *
+ *
+ */
+function smokesignals_block_view($delta = '')
+{
+    global $user;
+    $block = array();
+
+    if($delta == 'smokesignals_list' && user_access('use smoke signals')) {
+        $link = l( 'Create smoke signal', 'smokesignals' );
+
+
+        $chatLifeTime = (int)variable_get('smokesignals_chat_lifetime', SMOKESIGNALS_CHAT_LIFETIME);
+
+        $sql="
+          SELECT
+            *
+          FROM
+            {smokesignals_user}
+          WHERE
+            [[LIFETIME_LIMIT]]
+            uid =:uid
+        ";
+
+        if($chatLifeTime > 0) {
+            $sql = str_replace('[[LIFETIME_LIMIT]]', "created + INTERVAL $chatLifeTime MINUTE < NOW() AND ", $sql);
+        }
+        $results = db_query($sql, array(':uid' => $user->uid));
+
+        $chats = array();
+        foreach($results as $row)
+        {
+            $chats[] = l($row->ssid, 'smokesignal/'.$row->ssid);
+        }
+
+        $block['subject'] = NULL;
+        $block['content'] = $link . (count($chats) ? "<br/>" . theme('item_list', array('items' =>$chats)) : '');
+    }
+
+    return $block;
+}
+
+
+
+function smokesignals_launcher()
+{
+
+    global $user;
+
+    $chatInstancesLimit = (int)variable_get('smokesignals_chats_limit', SMOKESIGNALS_CHATS_LIMIT);
+    $chatLifeTime = (int)variable_get('smokesignals_chat_lifetime', SMOKESIGNALS_CHAT_LIFETIME);
+
+    $sql="
+          SELECT
+            *
+          FROM
+            {smokesignals_user}
+          WHERE
+            [[LIFETIME_LIMIT]]
+            uid =:uid
+        ";
+
+    // check if chat is still alive
+    if($chatLifeTime > 0) {
+        $sql = str_replace('[[LIFETIME_LIMIT]]', "created + INTERVAL $chatLifeTime MINUTE < NOW() AND ", $sql);
+    }
+
+    $results = db_query($sql, array(':uid' => $user->uid));
+
+    $chats = array();
+    foreach($results as $row)
+    {
+        $chats[] = l($row->ssid, 'smokesignal/'.$row->ssid);
+    }
+
+    $chatInstances = $results->rowCount();
+
+    // if we are within limits, launch a chat
+    if( count($chats) < $chatInstancesLimit || !$chatInstancesLimit) {
+        $chatSession = uniqid();
+        $fields = array(
+            'ssid' => $chatSession,
+            'uid' => $user->uid,
+            'color' => smokesignal_get_color($chatSession),
+            'created' =>  date("Y-m-d H:i:s", time()),
+            'creator' => 1
+        );
+
+        db_insert('smokesignals_user')
+            ->fields($fields)
+            ->execute();
+
+
+        drupal_goto('smokesignal/' . $chatSession);
+    }
+
+
+   $msg = "Your amount of chat instances $chatInstances has reached the amount of chats limit of " . $chatInstancesLimit . ":<br/>";
+   $msg .=  theme('item_list', array('items' =>$chats));
+    return $msg;
+}
+
+
+function smokesignals_chat($ssid)
+{
+    global $user;
+
+    drupal_set_title('Smoke Signal ' . $ssid);
+
+    $chatLifetime = (int)variable_get('smokesignals_chat_lifetime', SMOKESIGNALS_CHAT_LIFETIME);
+    if($chatLifetime > 0) {
+        $timeQuery = "
+            SELECT
+                created
+            FROM
+                {smokesignals_user}
+            WHERE
+                ssid = :ssid
+        ";
+
+        $result = db_query($timeQuery, array(':ssid' => $ssid));
+        $row = $result->fetchAssoc();
+        $chatInit = $row['created'];
+        $chatInit = DateTime::createFromFormat('Y-m-d H:i:s', $chatInit);
+        $chatInit->add(new \DateInterval("PT{$chatLifetime}M"));
+    }
+
+    // register the user if not registered yet
+    $countSql = "
+        SELECT
+            *
+        FROM
+           {smokesignals_user}
+        WHERE
+          uid = :uid
+          AND ssid = :ssid
+    ";
+
+    $result = db_query($countSql, array(':uid' => $user->uid, ':ssid' => $ssid));
+    if($result->rowCount() == 0)
+    {
+
+        $fields = array(
+            'ssid' => $ssid,
+            'uid' => $user->uid,
+            'color' => smokesignal_get_color($ssid),
+            'created' =>  date("Y-m-d H:i:s", time()),
+            'creator' => 0
+        );
+
+        db_insert('smokesignals_user')
+            ->fields($fields)
+            ->execute();
+    }
+
+
+    $sql = "
+      SELECT
+        c.message,
+        c.created,
+        u.color,
+        uu.name
+      FROM {smokesignals_chats} c
+      JOIN {smokesignals_user} u ON (u.uid = c.uid AND u.ssid = c.ssid)
+      JOIN {users} uu ON u.uid = uu.uid
+      WHERE c.ssid = :ssid";
+
+    $markup  = "<div id='smokesignal-messages'>";
+
+    $results = db_query($sql, array(':ssid'=> $ssid));
+
+    $created = date("Y-m-d H:i:s", time());
+    foreach($results as $row) {
+        $color = $row->color;
+        $userName = $row->name;
+        $message = $row->message;
+        $created = $row->created;
+        $uInfo = "<span style='color:$color'>$userName ($created):</span>";
+        $markup .= "<div>$uInfo $message</div>";
+    }
+    $markup .= "</div>";
+
+    if($chatInit > (new \DateTime("now")) || !$chatLifetime) {
+        drupal_add_js(array('smokesignals' => array('lastMessageCreated' => $created)), 'setting');
+        drupal_add_js('sites/all/modules/smokesignals/smokesignals.js', 'file');
+        $markup .= drupal_render(drupal_get_form('smokesignal_send_message_form', $ssid));
+    }
+    else {
+        $markup .= "<p>Smoke signal has ended...</p>";
+    }
+
+    return $markup;
+}
+
+
+
+function smokesignal_send_message_form($form, &$form_state, $ssid)
+{
+    $form = array();
+
+    $form['message'] = array(
+        '#type' => 'textarea',
+
+/*
+        '#attributes' => array(
+            'onkeypress' => array(
+                'if(event.keyCode==13){event.preventDefault();this.form.submit();}'
+            )
+        ),
+
+        '#ajax' => array(
+            'callback' => 'smokesignal_get_message',
+            //'wrapper' => 'smokesignal-messages',
+            //'method' => 'append',
+            //'effect' => 'slide',
+            //'keypress' => true
+        ),
+*/
+    );
+
+
+    $form['ssid'] = array(
+        '#type' => 'hidden',
+        '#value' => $ssid
+    );
+
+    return $form;
+}
+
+
+function smokesignals_get_message()
+{
+    // save the value to the table
+
+    global $emoticons;
+
+    global $user;
+
+    $ssid = $_POST['ssid'];
+    $message = $_POST['message'];
+
+    // filter message for emoticons
+    $_emoticons = $emoticons;
+    foreach($_emoticons as $shortcut => &$uri) {
+        $uri= "<img alt='$shortcut' src='$uri' title='$shortcut'>";
+    }
+
+    $message = str_replace(array_keys($_emoticons), array_values($_emoticons), $message);
+
+
+    $fields = array(
+        'ssid' => $ssid,//$form['ssid']['#value'],
+        'uid' => $user->uid,
+        'message' => $message,//$form['message']['#value'],
+        'created' =>  date("Y-m-d H:i:s", time())
+    );
+
+    db_insert('smokesignals_chats')
+        ->fields($fields)
+        ->execute();
+
+
+   print $fields['created'];exit;
+}
+
+function smokesignal_get_color($ssid)
+{
+    $sql = "
+        SELECT
+          color
+        FROM
+          {smokesignals_user}
+        WHERE
+          ssid = :ssid
+    ";
+
+    $results = db_query($sql, array(':ssid' => $ssid));
+
+    $chosenColors = array();
+    foreach($results as $row)
+    {
+        $chosenColors[] = $row->color;
+    }
+
+    do {
+        $color = '#'.strtoupper(dechex(rand(0x000000, 0xFFFFFF)));
+    }while(in_array($color, $chosenColors));
+
+    return $color;
+}
+
+function smokesignals_messages()
+{
+
+    $ssid = $_POST['ssid'];
+    $data = array();
+
+    $chatLifetime = (int)variable_get('smokesignals_chat_lifetime', SMOKESIGNALS_CHAT_LIFETIME);
+    if($chatLifetime > 0) {
+
+
+        $timeQuery = "
+        SELECT
+            created
+        FROM
+            {smokesignals_user}
+        WHERE
+            ssid = :ssid
+    ";
+
+        $result = db_query($timeQuery, array(':ssid' => $ssid));
+        $row = $result->fetchAssoc();
+        $chatInit = $row['created'];
+        $chatInit = DateTime::createFromFormat('Y-m-d H:i:s', $chatInit);
+        $chatInit->add(new \DateInterval("PT{$chatLifetime}M"));
+
+
+        if ($chatInit < (new \DateTime("now"))) {
+            $data['reload'] = true;
+            drupal_add_http_header('Content-Type', 'application/json');
+            print json_encode($data);
+            exit;
+        }
+    }
+
+    $lastMessageCreated = $_POST['lastMessageCreated'];
+
+    $sql = "
+      SELECT
+        c.message,
+        c.created,
+        u.color,
+        uu.name
+      FROM {smokesignals_chats} c
+      JOIN {smokesignals_user} u ON (u.uid = c.uid AND u.ssid = c.ssid)
+      JOIN {users} uu ON u.uid = uu.uid
+      WHERE
+        c.ssid = :ssid
+        AND c.created > :created
+      ORDER BY
+          c.created ASC";
+
+    $results = db_query($sql, array(':ssid'=> $ssid, ':created' => $lastMessageCreated));
+
+    $messages = array();
+    foreach($results as $row) {
+        $color = $row->color;
+        $userName = $row->name;
+        $message = $row->message;
+        $created = $row->created;
+        $uInfo = "<span style='color:$color'>$userName ($created):</span>";
+
+        $messages[] = array(
+            'message' => "<div>$uInfo $message</div>",
+            'created' => $created
+        );
+
+    }
+
+    $data['messages'] = $messages;
+
+    drupal_add_http_header('Content-Type','application/json');
+    print json_encode($data);
+    exit;
+}
+
+function smokesignals_admin()
+{
+
+    $form = array();
+    $form['smokesignals_chats_limit'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Maximum number of active chats per user.'),
+        '#default_value' => variable_get('smokesignals_chats_limit', SMOKESIGNALS_CHATS_LIMIT),
+        '#size' => 3,
+        '#maxlength' => 3,
+        '#description' => t("The maximum number of active chats a user can have at any given moment. Set to 0 for unlimited."),
+        '#required' => TRUE,
+    );
+    $form['smokesignals_chat_lifetime'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Lifetime in minutes a chat is active.'),
+        '#default_value' => variable_get('smokesignals_chat_lifetime', SMOKESIGNALS_CHAT_LIFETIME),
+        '#size' => 3,
+        '#maxlength' => 3,
+        '#description' => t(" After a the lifetime expires, users in the chat will no longer be able to chat. Set to 0 for unlimited"),
+        '#required' => TRUE,
+    );
+
+    return system_settings_form($form);
+}
+
+function smokesignals_admin_validate($form, &$form_state)
+{
+    $chatLimit = $form_state['values']['smokesignals_chats_limit'];
+    if (!is_numeric($chatLimit)) {
+        form_set_error('smokesignals_chats_limit', t('You must enter an integer for the maximum number of active chats.'));
+    }
+    elseif ($chatLimit < 0) {
+        form_set_error('smokesignals_chats_limit', t('Maximum number of active chats must be 0 or positive.'));
+    }
+
+    $lifetime = $form_state['values']['smokesignals_chat_lifetime'];
+    if (!is_numeric($lifetime)) {
+        form_set_error('smokesignals_chat_lifetime', t('You must enter an integer for the chat lifetime.'));
+    }
+    elseif ($lifetime < 0) {
+        form_set_error('smokesignals_chat_lifetime', t('Chat lifetime must be 0 or positive.'));
+    }
+}
+
+function smokesignals_delete($ssid)
+{
+    global $user;
+    $sql = "
+        SELECT
+            *
+        FROM
+            {smokesignals_user}
+        WHERE
+            ssid = :ssid
+    ";
+
+    $result = db_query($sql, array(':ssid' => $ssid));
+    $row = $result->fetchAssoc();
+    if($user->uid != $row['uid']) {
+        if(!user_access('administer smoke signals', $user)) {
+            drupal_set_message('Smoke signal ' . $ssid . ' cannot be deleted by you.');
+        }
+    }
+
+    $num_deleted = db_delete('smokesignals_user')
+        ->condition('ssid', $ssid)
+        ->execute();
+
+
+    $num_deleted2 = db_delete('smokesignals_chats')
+        ->condition('ssid', $ssid)
+        ->execute();
+
+    drupal_set_message("Smoke signal $ssid deleted. $num_deleted users were deleted from the chat. $num_deleted2 messages were deleted from the chat.");
+
+    drupal_goto('user');
+}

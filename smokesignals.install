@@ -1,0 +1,119 @@
+<?php
+
+function smokesignals_schema()
+{
+    $schema = array();
+
+
+    $schema['smokesignals_user'] = array(
+        'description' => t('maps chat instance to users'),
+        'fields' => array(
+            'ssid' => array(
+                'description' => t('Smoke signal unique hash'),
+                'type' => 'varchar',
+                'length' => 60,
+                'not null' => true,
+                'default' => ''
+            ),
+            'uid' => array(
+                'description' => t('User ID'),
+                'type' => 'int',
+                'length' => 10,
+                'unsigned' => true,
+                'not null' => true,
+                'default' => 0
+            ),
+            'created' => array(
+                'type' => 'datetime',
+                'mysql_type' => 'datetime',
+                'not null' => true,
+            ),
+            'color' => array(
+                'type' => 'varchar',
+                'length' => 24,
+                'not null' => true,
+                'default' => '',
+            ),
+            'creator' => array(
+                'type' => 'int',
+                'size' => 'tiny',
+                'not null' => true,
+                'default' => 0
+            )
+        ),
+        'primary key' => array(
+            'ssid',
+            'uid'
+        ),
+        'indexes' => array(
+            'i_ssid' => array('ssid'),
+            'i_uid' => array('uid')
+        ),
+        'foreign keys' => array(
+            'uid' => array('users' => 'uid')
+        ),
+        'mysql_engine' => 'InnoDB',
+        'mysql_character_set' => 'UTF8'
+    );
+
+
+    $schema['smokesignals_chats'] = array(
+        'description' => t('Records smokesignal chats'),
+        'fields' => array(
+            'ssid' => array(
+                'description' => t('Smoke signal unique hash'),
+                'type' => 'varchar',
+                'length' => 60,
+                'not null' => true,
+                'default' => ''
+            ),
+            'uid' => array(
+                'description' => t('User ID'),
+                'type' => 'int',
+                'length' => 10,
+                'unsigned' => true,
+                'not null' => true,
+                'default' => 0
+            ),
+            'message' => array(
+                'description' => t('User message'),
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => true,
+                'default' => ''
+            ),
+            'created' => array(
+                'type' => 'datetime',
+                'mysql_type' => 'datetime',
+                'not null' => true,
+            ),
+        ),
+        'primary key' => array('ssid', 'uid', 'created'),
+        'foreign keys' => array(
+            'uid' => array('users' => 'uid'),
+            'ssid' => array('smokesignals_user' => 'ssid')
+        ),
+        'indexes' => array(
+            'i_ssid' => array('ssid'),
+            'i_uid' => array('uid'),
+            'i_ssid_uid' => array('ssid', 'uid')
+        ),
+        'mysql_engine' => 'InnoDB',
+        'mysql_character_set' => 'UTF8'
+    );
+
+    return $schema;
+}
+
+
+function smokesignals_install()
+{
+    variable_set('smokesignals_chats_limit',SMOKESIGNALS_CHATS_LIMIT);
+    variable_set('smokesignals_chat_lifetime', SMOKESIGNALS_CHAT_LIFETIME);
+}
+
+function smokesignals_uninstall()
+{
+    variable_del('smokesignals_chats_limit');
+    variable_del('smokesignals_chat_lifetime');
+}

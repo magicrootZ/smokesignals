@@ -1,0 +1,8 @@
+name = Smoke Signals Chat
+description = Chat application within a drupal instance
+package = Sample
+version = VERSION
+core = 7.x
+configure = admin/config/services/smokesignals
+
+
