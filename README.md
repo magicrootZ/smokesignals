@@ -8,7 +8,6 @@ This is only an example module for Drupal 7 that exhibits chat capabilities.
 - begin chatting.
 - The limit of chat instances that can be created by a user is controlled in the admin page admin/config/services/smokesignals (default 10)
 - A chat lifetime (in minutes) is also controlled by the same admin page admin/config/services/smokesignals (default 5 minutes)
-- The module also emulates hipchat emoticons. Visit smokesignals/emoticons to see which emoticons can be used.
 - The user/%user/smokesignal path also provides a list of chats the user has access to.
 
 TODO:
