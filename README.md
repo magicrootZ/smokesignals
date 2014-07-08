@@ -1,4 +1,4 @@
-This is only an example module for Drupal 7 that exhibits chat capabilities.
+This is only an example module for Drupal 7 that exhibits chat capabilities. Inspired by http://en.wikipedia.org/wiki/Smoke_signal
 
 - Enable the module.
 - Set the correct permissions.
